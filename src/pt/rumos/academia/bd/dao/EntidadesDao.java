@@ -26,6 +26,27 @@ public class EntidadesDao {
 		}
 	}
 	
+	public void obterByID(int curId) {
+		
+		String query = "SELECT id, nome from Entidades WHERE id = ? ORDER BY id";
+		
+		try(Connection con = PostgresConfiguration.obterConnection()){
+				
+				PreparedStatement stat = con.prepareStatement(query);
+				stat.setInt(1, curId);
+				ResultSet entidades = stat.executeQuery();
+				while(entidades.next()) {
+					int id = entidades.getInt(1);
+					String nome = entidades.getString(2);
+					System.out.println(String.format("%d - %s", id, nome));
+				}
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		
+	}
+	
 	public void criar(int id, String name) {
 		
 		String insert = "INSERT INTO Entidades (id, nome) values (?,?)";

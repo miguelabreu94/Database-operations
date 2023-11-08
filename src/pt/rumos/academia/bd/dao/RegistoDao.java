@@ -1,10 +1,15 @@
 package pt.rumos.academia.bd.dao;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import pt.rumos.academia.bd.entities.Registo;
 
 public class RegistoDao {
 
-	public void obter() {
+	public List<Registo> obter() {
 		
 		String query = "SELECT email, data, username, password from Registo";
 		
@@ -12,52 +17,62 @@ public class RegistoDao {
 			
 			Statement stat = con.createStatement();
 			ResultSet registos = stat.executeQuery(query);
+			
+			var listaRegistos = new ArrayList<Registo>();
+			
 			while(registos.next()) {
-				String email = registos.getString(1);
-				Date data = registos.getDate(2);
-				String username = registos.getString(3);
-				String password = registos.getString(4);
+				var registo = new Registo(registos.getString(1),
+				registos.getDate(2),
+				registos.getString(3),
+				registos.getString(4));
 				
-				System.out.println(String.format("%s, %s, %s, %s", email, data, username, password));
+				listaRegistos.add(registo);
 			}
 		
 			
+		return listaRegistos;
+			
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw new RuntimeException(e.getMessage());
 		}
 	
 	}
 	
-	public void criar2(String email, String data, String username, String password) {
+public Optional<Registo> obterByEmail(String curEmail) {
 		
-		String parameters = String.format("'%s','%s','%s','%s'", email, data, username, password);
-		String insert = "INSERT INTO Registo (email, data, username, password) values ("+parameters+")";
+		String query = "SELECT email, data, username, password from Registo where lower(email) = lower(?)";
 		
-		try(Connection con = PostgresConfiguration.obterConnection()){
+		try(Connection con = PostgresConfiguration.obterConnection()) {
 			
-			Statement stat = con.createStatement();
-			int nLinhas = stat.executeUpdate(insert);
-			if (nLinhas == 0) {
-				throw new RuntimeException("Não foi possível inserir o registo");
+			PreparedStatement stat = con.prepareStatement(query);
+			stat.setString(1, curEmail);
+			ResultSet registos = stat.executeQuery();
+			if(registos.next()) {
+				return Optional.of(new Registo(registos.getString(1),
+						registos.getDate(2),
+						registos.getString(3),
+						registos.getString(4)
+						));
 			}
 			
-		} catch (Exception e) {
+		} catch(Exception e) {
 			e.printStackTrace();
 		}
 		
+		return Optional.empty();
 	}
-	
-	public void criar(String email, String data, String username, String password) {
+	public void criar(Registo registo) {
 		
 		String insert = "INSERT INTO Registo (email, data, username, password) values (?,?,?,?)";
 		
 		try(Connection con = PostgresConfiguration.obterConnection()){
 			
 			PreparedStatement stat = con.prepareStatement(insert);
-			stat.setString(1, email);
-			stat.setDate(2, Date.valueOf(data));
-			stat.setString(3, username);
-			stat.setString(4, password);
+			stat.setString(1, registo.getEmail());
+			stat.setDate(2, new java.sql.Date(registo.getData().getTime()));
+			stat.setString(3, registo.getUsername());
+			stat.setString(4, registo.getPassword());
 			int nLinhas = stat.executeUpdate();
 			if (nLinhas == 0) {
 				throw new RuntimeException("Não foi possível inserir o registo");
@@ -101,7 +116,7 @@ public class RegistoDao {
 		}
 	}
 	
-public void atualizarpw(String email, String password, String novapassword) {
+	public void atualizarpw(String email, String password, String novapassword) {
 		
 		String updatepw = "UPDATE Registo SET password = ? WHERE email = ? AND password = ?";
 		
