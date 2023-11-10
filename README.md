@@ -13,7 +13,7 @@ Microproject:
 
 I have created 02 Tables using DBeaver on my local Database (Postgresql)
 
-Using a 3 layer business model, I have made a Controller to communicate with the user 
+Using a 3 label business model, I have made a Controller to communicate with the user 
 
 DAO to create CRUD methods
 
