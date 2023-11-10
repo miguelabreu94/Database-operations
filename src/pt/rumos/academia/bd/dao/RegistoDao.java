@@ -28,7 +28,7 @@ public class RegistoDao {
 				
 				listaRegistos.add(registo);
 			}
-		
+	
 			
 		return listaRegistos;
 			

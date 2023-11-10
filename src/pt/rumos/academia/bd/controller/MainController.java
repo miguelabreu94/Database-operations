@@ -1,7 +1,6 @@
 package pt.rumos.academia.bd.controller;
 
 import pt.rumos.academia.bd.entities.Registo;
-import pt.rumos.academia.bd.service.EntidadesService;
 import pt.rumos.academia.bd.service.RegistoService;
 
 public class MainController {
@@ -16,16 +15,10 @@ public class MainController {
 			System.out.println("remover-by-registo");
 			System.out.println("atualizar-by-registo");
 			System.out.println("alterar-password");
-			System.out.println("listar-entidade");
-			System.out.println("listar-entidade-by-id");
-			System.out.println("criar-entidade");
-			System.out.println("atualizar-entidade");
-			System.out.println("remover-entidade");
 			return;
 		}
 		
 		var registoService = new RegistoService();
-		var entidadesService = new EntidadesService();
 		
 		switch(args[0]) {
 	
@@ -54,21 +47,6 @@ public class MainController {
 				break;
 			case "alterar-password":
 				registoService.alterarPassword(args[1], args[2], args[3], args[4]);
-				break;
-			 case "listar-entidade":
-				entidadesService.listarEntidade();
-				break;
-			case "listar-entidade-by-id":
-				entidadesService.listarEntidadebyID(Integer.parseInt(args[1]));
-				break;
-			case "criar-entidade":
-				entidadesService.criarEntidade(Integer.parseInt(args[1]), args[2]);
-				break;
-			case "atualizar-entidade":
-				entidadesService.atualizarEntidade(Integer.parseInt(args[1]),args[2]);
-				break;
-			case "remover-entidade":
-				entidadesService.removerEntidade(Integer.parseInt(args[1]));
 				break;
 			default:
 			System.out.println("Não entendi o teu comando");
