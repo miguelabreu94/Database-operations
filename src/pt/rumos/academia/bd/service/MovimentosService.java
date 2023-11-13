@@ -13,9 +13,7 @@ public class MovimentosService {
 	
 	private MovimentoDao movimentoDao = new MovimentoDao();
 	
-	public List <Movimento> listarMovimentos(){
-		
-		
+	public List <Movimento> listarMovimentos(){	
 		return movimentoDao.obter();
 	}
 
@@ -33,8 +31,6 @@ public class MovimentosService {
 		
 		movimentoDao.criar(new Movimento(0,credito,debito,entidade,conta,data,categoria,descricao,tipo));
 	}
-	
-	//credito - debito
 	
 	public double calcularSaldo() {
 		
