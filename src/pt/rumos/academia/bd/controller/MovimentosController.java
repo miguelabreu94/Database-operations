@@ -1,5 +1,7 @@
 package pt.rumos.academia.bd.controller;
 
+import java.time.LocalDateTime;
+
 import pt.rumos.academia.bd.entities.Movimento;
 import pt.rumos.academia.bd.service.MovimentosService;
 
@@ -24,11 +26,20 @@ public class MovimentosController {
 			}
 			break;
 		case "criar-movimento":
+			movimentosService.criarMovimento(Double.parseDouble(args[1]), Double.parseDouble(args[2]), Integer.parseInt(args[3]), Integer.parseInt(args[4]),
+					LocalDateTime.parse(args[5]), Integer.parseInt(args[6]), args[7], args[8]);
 			break;
-		case "remover-movimento":
+		case "calcular-balanco-movimento":
+			System.out.println(movimentosService.calcularSaldo());
 			break;
-		case "atualizar-by-id":
+		case "calcular-balanco-conta-movimento":
 			break;
+		case "calcular-balanco-categoria-movimento":
+			break;
+		case "calcular-balanco-entidade-movimento":
+			break;
+
+
 		
 		default:
 		System.out.println("Não entendi o teu comando");

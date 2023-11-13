@@ -9,7 +9,7 @@ import pt.rumos.academia.bd.entities.Registo;
 
 public class RegistoDao {
 
-	public List<Registo> obter() {
+public List<Registo> obter() {
 		
 		String query = "SELECT email, data, username, password from Registo";
 		
@@ -62,7 +62,9 @@ public Optional<Registo> obterByEmail(String curEmail) {
 		
 		return Optional.empty();
 	}
-	public void criar(Registo registo) {
+	
+
+public void criar(Registo registo) {
 		
 		String insert = "INSERT INTO Registo (email, data, username, password) values (?,?,?,?)";
 		

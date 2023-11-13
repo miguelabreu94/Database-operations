@@ -1,29 +1,10 @@
 package pt.rumos.academia.bd.entities;
 
-public class Conta {
+public class Conta extends ClasseIdNome{
 
-	private int id;
-	private String nome;
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
+	public Conta () {}
+	
+	public Conta (int id) {
 		this.id = id;
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-	
-	
-	@Override
-	public String toString() {
-		return String.format("%d,%s", id, nome);
 	}
 }

@@ -14,6 +14,24 @@ public class Movimento {
 	private String descricao;
 	private String tipo;
 	
+	public Movimento () {
+		
+	}
+	
+	public Movimento(int id, double credito, double debito, Entidade entidade, Conta conta, LocalDateTime data,
+			Categoria categoria, String descricao, String tipo) {
+		super();
+		this.id = id;
+		this.credito = credito;
+		this.debito = debito;
+		this.entidade = entidade;
+		this.conta = conta;
+		this.data = data;
+		this.categoria = categoria;
+		this.descricao = descricao;
+		this.tipo = tipo;
+	}
+	
 	
 	public int getId() {
 		return id;

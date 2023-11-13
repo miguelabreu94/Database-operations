@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,8 +73,7 @@ public class MovimentoDao {
 	
 	public void criar(Movimento movimento) {
 		
-		String insert = "INSERT INTO movimentos (Credito,Debito,Entidade,Conta,data,Categoria,Descricao,tipo) values (?,?,?,?,?,?,?,?,?,?,?,?";
-		
+		String insert = "INSERT INTO movimentos (credito,debito,entidade,conta,data,categoria,descricao,tipo) values (?,?,?,?,?,?,?,?)";
 		
 			try(Connection con = PostgresConfiguration.obterConnection()){
 			
@@ -81,18 +81,22 @@ public class MovimentoDao {
 			
 			stat.setDouble(1, movimento.getCredito());
 			stat.setDouble(2, movimento.getDebito());
+			stat.setInt(3, movimento.getEntidade().getId());
+			stat.setInt(4, movimento.getConta().getId());
+			stat.setTimestamp(5, Timestamp.valueOf(movimento.getData()));
+			stat.setInt(6, movimento.getCategoria().getId());
+			stat.setString(7, movimento.getDescricao());
+			stat.setString(8, movimento.getTipo());
 			
-			var entidade = new Entidade();
-			stat.setString(3, movimento.getEntidade().getNome());
-
-			// TODO Completar este bloco 
-		
+			int nLinhas = stat.executeUpdate();
+			if (nLinhas == 0) {
+				throw new RuntimeException("Não foi possível inserir o movimento");
+			}
+			
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		
-	}
-		
+	}		
 	}
 
