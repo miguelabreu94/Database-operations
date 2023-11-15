@@ -1,6 +1,7 @@
 package pt.rumos.academia.bd.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import pt.rumos.academia.bd.dao.MovimentoDao;
@@ -43,11 +44,100 @@ public class MovimentosService {
 			debito += movimento.getDebito();
 		}
 		
-		double saldo = credito - debito;
+		return credito - debito;
+	}
+	
+	public double calcularSaldoByEntidadeID(int entidade_id) {
+	
+		List <Movimento> listamovimentos = listarMovimentos();
+		List <Movimento> finalList = new ArrayList<Movimento>();
 		
-		return saldo;
+		double credito = 0;
+		double debito = 0;
+		
+		for (Movimento movimento : listamovimentos) {
+			if (movimento.getEntidade().getId() == entidade_id) {
+				finalList.add(movimento);
+			}
+		}
+		
+		for (Movimento movimento : finalList) {
+			credito += movimento.getCredito();
+			debito += movimento.getDebito();
+		}
+		
+		return credito - debito;
+		}
+	
+	public double calcularSaldoByEntidadeIDList(List <Integer> entidades_ids) {
+		
+		List <Movimento> listamovimentos = listarMovimentos();
+		List <Movimento> finalList = new ArrayList<Movimento>();
+		
+		double credito = 0;
+		double debito = 0;
+		
+		for (Movimento movimento : listamovimentos) {
+			if (entidades_ids.contains(movimento.getEntidade().getId())) {
+				finalList.add(movimento);
+			}
+		}
+		
+		for (Movimento movimento : finalList) {
+			credito += movimento.getCredito();
+			debito += movimento.getDebito();
+		}
+		
+		return credito - debito;
+	}
+	
+	
+	public double calcularSaldoByCategoriaID(int categoria_id) {
+		
+		List <Movimento> listamovimentos = listarMovimentos();
+		List <Movimento> finalList = new ArrayList<Movimento>();
+		
+		double credito = 0;
+		double debito = 0;
+		
+		for (Movimento movimento : listamovimentos) {
+			if (movimento.getCategoria().getId() == categoria_id) {
+				finalList.add(movimento);
+			}
+		}
+		
+		for (Movimento movimento : finalList) {
+			credito += movimento.getCredito();
+			debito += movimento.getDebito();
+		}
+		
+		return credito - debito;
+	}
+	
+public double calcularSaldoByContaID(int conta_id) {
+		
+		List <Movimento> listamovimentos = listarMovimentos();
+		List <Movimento> finalList = new ArrayList<Movimento>();
+		
+		double credito = 0;
+		double debito = 0;
+		
+		for (Movimento movimento : listamovimentos) {
+			if (movimento.getCategoria().getId() == conta_id) {
+				finalList.add(movimento);
+			}
+		}
+		
+		for (Movimento movimento : finalList) {
+			credito += movimento.getCredito();
+			debito += movimento.getDebito();
+		}
+		
+		return credito - debito;
 	}
 	
 	
 	
-}
+	}
+	
+	

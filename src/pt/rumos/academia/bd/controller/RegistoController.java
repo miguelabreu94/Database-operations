@@ -3,7 +3,7 @@ package pt.rumos.academia.bd.controller;
 import pt.rumos.academia.bd.entities.Registo;
 import pt.rumos.academia.bd.service.RegistoService;
 
-public class MainController {
+public class RegistoController {
 
 	public static void main(String[] args) {
 		
