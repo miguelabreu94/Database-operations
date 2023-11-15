@@ -1,5 +1,4 @@
-# Project Title
-Transactions APP
+# Transactions APP
 
 Saving personal transaction to earnings, payments, budgets, etc..
 
