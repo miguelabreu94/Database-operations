@@ -33,9 +33,14 @@ public class MovimentosService {
 		movimentoDao.criar(new Movimento(0,credito,debito,entidade,conta,data,categoria,descricao,tipo));
 	}
 	
-	public double calcularSaldo() {
+	public double calcularSaldoDeTodosOsMovimentos() {
 		
 		List <Movimento> listamovimentos = listarMovimentos();
+		
+		return calcularSaldo(listamovimentos);
+	}
+
+	private double calcularSaldo(List<Movimento> listamovimentos) {
 		double credito = 0;
 		double debito = 0;
 		
@@ -49,33 +54,18 @@ public class MovimentosService {
 	
 	public double calcularSaldoByEntidadeID(int entidade_id) {
 	
-		List <Movimento> listamovimentos = listarMovimentos();
-		List <Movimento> finalList = new ArrayList<Movimento>();
+		var movs = movimentoDao.obterMovByEntidadeID(entidade_id);
 		
-		double credito = 0;
-		double debito = 0;
+		return calcularSaldo(movs);
 		
-		for (Movimento movimento : listamovimentos) {
-			if (movimento.getEntidade().getId() == entidade_id) {
-				finalList.add(movimento);
-			}
-		}
-		
-		for (Movimento movimento : finalList) {
-			credito += movimento.getCredito();
-			debito += movimento.getDebito();
-		}
-		
-		return credito - debito;
-		}
+	}
 	
 	public double calcularSaldoByEntidadeIDList(List <Integer> entidades_ids) {
 		
 		List <Movimento> listamovimentos = listarMovimentos();
 		List <Movimento> finalList = new ArrayList<Movimento>();
 		
-		double credito = 0;
-		double debito = 0;
+		// for e chamar método de entidadeID
 		
 		for (Movimento movimento : listamovimentos) {
 			if (entidades_ids.contains(movimento.getEntidade().getId())) {
@@ -83,61 +73,24 @@ public class MovimentosService {
 			}
 		}
 		
-		for (Movimento movimento : finalList) {
-			credito += movimento.getCredito();
-			debito += movimento.getDebito();
-		}
-		
-		return credito - debito;
+		return calcularSaldo(finalList);
 	}
 	
 	
 	public double calcularSaldoByCategoriaID(int categoria_id) {
 		
-		List <Movimento> listamovimentos = listarMovimentos();
-		List <Movimento> finalList = new ArrayList<Movimento>();
+		var movs = movimentoDao.obterMovByCategoriaID(categoria_id);
 		
-		double credito = 0;
-		double debito = 0;
-		
-		for (Movimento movimento : listamovimentos) {
-			if (movimento.getCategoria().getId() == categoria_id) {
-				finalList.add(movimento);
-			}
-		}
-		
-		for (Movimento movimento : finalList) {
-			credito += movimento.getCredito();
-			debito += movimento.getDebito();
-		}
-		
-		return credito - debito;
+		return calcularSaldo(movs);
 	}
 	
-public double calcularSaldoByContaID(int conta_id) {
+	public double calcularSaldoByContaID(int conta_id) {
 		
-		List <Movimento> listamovimentos = listarMovimentos();
-		List <Movimento> finalList = new ArrayList<Movimento>();
+		var movs = movimentoDao.obterMovByContaID(conta_id);
 		
-		double credito = 0;
-		double debito = 0;
-		
-		for (Movimento movimento : listamovimentos) {
-			if (movimento.getCategoria().getId() == conta_id) {
-				finalList.add(movimento);
-			}
-		}
-		
-		for (Movimento movimento : finalList) {
-			credito += movimento.getCredito();
-			debito += movimento.getDebito();
-		}
-		
-		return credito - debito;
+		return calcularSaldo(movs);
 	}
 	
-	
-	
-	}
+}
 	
 	

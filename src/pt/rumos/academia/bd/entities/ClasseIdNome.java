@@ -3,6 +3,7 @@ package pt.rumos.academia.bd.entities;
 public class ClasseIdNome {
 
 	protected int id;
+	
 	protected String nome;
 
 	public int getId() {

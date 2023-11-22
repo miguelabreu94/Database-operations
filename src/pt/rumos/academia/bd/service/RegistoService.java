@@ -4,22 +4,31 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import pt.rumos.academia.bd.dao.RegistoDao;
+import pt.rumos.academia.bd.dao.DatabaseConfiguration;
+import pt.rumos.academia.bd.dao.PostgresRegistosDao;
+import pt.rumos.academia.bd.dao.RegistosDao;
+import pt.rumos.academia.bd.dao.TestarRegistosDao;
 import pt.rumos.academia.bd.entities.Registo;
 import pt.rumos.academia.bd.utils.HashUtils;
 
 public class RegistoService {
 	
-	private RegistoDao rDao = new RegistoDao();
+	private RegistosDao rDao = DatabaseConfiguration.obterRegistosDao();
 
-	public List<Registo> listarRegisto() {
-		var listaDeRegistos = rDao.obter();
-		return listaDeRegistos;
-	}
-	
 	public Optional<Registo> listarRegistoByEmail(String curEmail) {
 		return rDao.obterByEmail(curEmail);
-}
+	}
+	
+	public Optional<Registo> listarRegistoByUsername(String username) {
+		return rDao.obterByUsername(username);
+	}
+	
+	public List<Registo> listarRegisto() {
+		
+		var listaDeRegistos = rDao.obter();
+		
+		return listaDeRegistos;
+	}
 	
 	public void criarRegisto(String email, String data, String username, String password) {
 	    	var passwordHash = HashUtils.calcularHash(password);

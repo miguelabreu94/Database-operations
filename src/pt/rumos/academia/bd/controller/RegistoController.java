@@ -2,11 +2,18 @@ package pt.rumos.academia.bd.controller;
 
 import pt.rumos.academia.bd.entities.Registo;
 import pt.rumos.academia.bd.service.RegistoService;
+import pt.rumos.academia.bd.service.SecurityService;
 
 public class RegistoController {
 
 	public static void main(String[] args) {
 		
+		
+		if(!SecurityService.isAutenthicated()) {
+			System.out.println("O utilizador não está autenticado");
+			System.exit(-1);
+		}
+				
 		if(args.length == 0) {
 			System.out.println("Por favor indique um comando válido.");
 			System.out.println("listar-registo");
@@ -16,6 +23,11 @@ public class RegistoController {
 			System.out.println("atualizar-by-registo");
 			System.out.println("alterar-password");
 			return;
+		}
+		
+		if(!SecurityService.temAutorizacaoPara(args[0])) {
+			System.out.println("O utilizador não está autorizado para essa ação");
+			System.exit(-2);
 		}
 		
 		var registoService = new RegistoService();

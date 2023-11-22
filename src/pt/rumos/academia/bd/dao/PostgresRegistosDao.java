@@ -7,13 +7,14 @@ import java.util.Optional;
 
 import pt.rumos.academia.bd.entities.Registo;
 
-public class RegistoDao {
+public class PostgresRegistosDao implements RegistosDao {
 
+@Override
 public List<Registo> obter() {
 		
 		String query = "SELECT email, data, username, password from Registo";
 		
-		try(Connection con = PostgresConfiguration.obterConnection()){
+		try(Connection con = DatabaseConfiguration.obterConnection()){
 			
 			Statement stat = con.createStatement();
 			ResultSet registos = stat.executeQuery(query);
@@ -39,11 +40,12 @@ public List<Registo> obter() {
 	
 	}
 	
+@Override
 public Optional<Registo> obterByEmail(String curEmail) {
 		
 		String query = "SELECT email, data, username, password from Registo where lower(email) = lower(?)";
 		
-		try(Connection con = PostgresConfiguration.obterConnection()) {
+		try(Connection con = DatabaseConfiguration.obterConnection()) {
 			
 			PreparedStatement stat = con.prepareStatement(query);
 			stat.setString(1, curEmail);
@@ -64,11 +66,12 @@ public Optional<Registo> obterByEmail(String curEmail) {
 	}
 	
 
+@Override
 public void criar(Registo registo) {
 		
 		String insert = "INSERT INTO Registo (email, data, username, password) values (?,?,?,?)";
 		
-		try(Connection con = PostgresConfiguration.obterConnection()){
+		try(Connection con = DatabaseConfiguration.obterConnection()){
 			
 			PreparedStatement stat = con.prepareStatement(insert);
 			stat.setString(1, registo.getEmail());
@@ -86,11 +89,12 @@ public void criar(Registo registo) {
 		
 	}
 	
+	@Override
 	public void remover(String email) {
 		
 		String delete = "DELETE FROM Registo WHERE email = ?";
 		
-		try(Connection con = PostgresConfiguration.obterConnection()){
+		try(Connection con = DatabaseConfiguration.obterConnection()){
 			
 			PreparedStatement stat = con.prepareStatement(delete);
 			stat.setString(1, email);
@@ -102,11 +106,12 @@ public void criar(Registo registo) {
 		
 	}
 	
+	@Override
 	public void atualizar(String email, String data) {
 		
 		String update = "UPDATE Registo SET data = ? WHERE email = ?";
 		
-		try(Connection con = PostgresConfiguration.obterConnection()){
+		try(Connection con = DatabaseConfiguration.obterConnection()){
 			
 			PreparedStatement stat = con.prepareStatement(update);
 			stat.setDate(1, Date.valueOf(data));
@@ -118,11 +123,12 @@ public void criar(Registo registo) {
 		}
 	}
 	
+	@Override
 	public void atualizarpw(String email, String password, String novapassword) {
 		
 		String updatepw = "UPDATE Registo SET password = ? WHERE email = ? AND password = ?";
 		
-		try(Connection con = PostgresConfiguration.obterConnection()){
+		try(Connection con = DatabaseConfiguration.obterConnection()){
 			
 			PreparedStatement stat = con.prepareStatement(updatepw);
 			stat.setString(1, novapassword);
@@ -133,6 +139,31 @@ public void criar(Registo registo) {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public Optional<Registo> obterByUsername(String username) {
+		
+		String query = "SELECT email, data, username, password from Registo where lower(username) = lower(?)";
+		
+		try(Connection con = DatabaseConfiguration.obterConnection()) {
+			
+			PreparedStatement stat = con.prepareStatement(query);
+			stat.setString(1, username);
+			ResultSet registos = stat.executeQuery();
+			if(registos.next()) {
+				return Optional.of(new Registo(registos.getString(1),
+						registos.getDate(2),
+						registos.getString(3),
+						registos.getString(4)
+						));
+			}
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return Optional.empty();
 	}
 	
 }
