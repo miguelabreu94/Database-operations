@@ -28,6 +28,16 @@ public class ClasseIdNome {
 		return String.format("%d,%s", id, nome);
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj == null) return false;
+		if(this == obj) return false;
+		if(obj instanceof ClasseIdNome cin) {
+			return cin.id == this.id && cin.nome.equals(this.nome); 
+		}
+		
+		return false;
+	}
 	
 	
 }

@@ -1,8 +1,9 @@
 package pt.rumos.academia.bd.entities;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 
-public class Movimento {
+public class Movimento implements Comparable<Movimento>{
 
 	private int id;
 	private double credito;
@@ -88,9 +89,69 @@ public class Movimento {
 		this.tipo = tipo;
 	}
 
-	
+	@Override
 	public String toString() {
 		return String.format ("%d,'%.2f','%.2f',[%s],[%s],%s,[%s],'%s',%s", id, credito, debito, entidade, conta, data, categoria, descricao, tipo);
 	}
+	
+	@Override
+	public boolean equals(Object movimento) {
+		
+		if(this == movimento) {
+			return true;
+		}
+		
+		if (movimento == null || getClass() != movimento.getClass()) {
+			return false;
+		}
+		
+		if(movimento instanceof Movimento mov) {
+			return this.id == mov.id
+					&& this.credito == mov.credito
+					&& this.debito == mov.debito
+					&& this.entidade.equals(mov.entidade)
+					&& this.conta.equals(mov.conta)
+					&& this.data.equals(mov.data)
+					&& this.categoria.equals(mov.categoria)
+					&& this.descricao.equals(mov.descricao)
+					&& this.tipo.equals(mov.tipo);
+		}
+		
+		return true;
+	}
+
+	@Override
+	public int compareTo(Movimento o) {
+		
+		return this.data.compareTo(o.data);
+		
+	}
+	
+	
+	public static class CompareDescricao implements Comparator<Movimento>{
+
+		@Override
+		public int compare(Movimento o1, Movimento o2) {
+			
+			return o1.descricao.compareTo(o2.descricao);
+		}
+		
+	}
+	
+	public static class CompareSaldo implements Comparator<Movimento>{
+
+		@Override
+		public int compare(Movimento o1, Movimento o2) {
+			
+			if((o1.credito - o1.debito) - (o2.credito - o2.debito) > 0) {
+				return 1;
+			
+			}
+			else return -1;
+		}
+		
+	}
+	
+	
 	
 }

@@ -2,8 +2,10 @@ package pt.rumos.academia.bd.controller;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import pt.rumos.academia.bd.entities.ContasSaldo;
 import pt.rumos.academia.bd.entities.Movimento;
 import pt.rumos.academia.bd.service.MovimentosService;
 import pt.rumos.academia.bd.service.SecurityService;
@@ -11,11 +13,12 @@ import pt.rumos.academia.bd.service.SecurityService;
 public class MovimentosController {
 
 	public static void main(String[] args) {
-		
+		/*
 		if(!SecurityService.isAutenthicated() ) {
 			System.out.println("O utilizador não está autenticado");
 			System.exit(-1);
 		}
+		*/
 		
 		if(args.length == 0) {
 			System.out.println("Por favor indique um comando válido.");
@@ -27,22 +30,30 @@ public class MovimentosController {
 			System.out.println("calcular-balanco-conta-movimento");
 			return;
 		}
-		
+		/*
 		if(!SecurityService.temAutorizacaoPara(args[0])) {
 			System.out.println("O utilizador não está autorizado para essa ação");
 			System.exit(-2);
 		}
-		
+		*/
 		var movimentosService = new MovimentosService();
 		
 		switch(args[0]) {
 		
 		case "listar-movimentos":
 			var listaDeMovimentos = movimentosService.listarMovimentos(); 
+			
+			if("default".equals(args[1])) Collections.sort(listaDeMovimentos);
+			
+			if("sort-descricao".equals(args[1])) Collections.sort(listaDeMovimentos, new Movimento.CompareDescricao());
+			
+			if("sort-saldo".equals(args[1])) Collections.sort(listaDeMovimentos, new Movimento.CompareSaldo());
+			
 			for (Movimento mov : listaDeMovimentos) {
 				System.out.println(mov);
 			}
 			break;
+			
 		case "criar-movimento":
 			movimentosService.criarMovimento(Double.parseDouble(args[1]), Double.parseDouble(args[2]), Integer.parseInt(args[3]), Integer.parseInt(args[4]),
 					LocalDateTime.parse(args[5]), Integer.parseInt(args[6]), args[7], args[8]);
