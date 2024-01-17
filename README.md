@@ -5,7 +5,7 @@ Saving personal transaction to earnings, payments, budgets, etc..
 # Dependencies
 postgresql-42.6.0.jar
 
-Created a main table on DBeaver for Movements (id, credit, debit, entitie, account, date, category, description, type)
+Created a main table on PostgreSQL for Movements (id, credit, debit, entitie, account, date, category, description, type)
 Secondary tables for Registers, Entities, Accounts, Categories.
 
 Using a 3 label business model, I have made a Controller package to communicate with the user
